@@ -2,21 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Recovery Timeline (Slim)</title>
-
-  <!-- Tailwind for quick styling -->
+  <title>Recovery Timeline (Graph Only)</title>
+  <!-- Tailwind for layout + typography -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- GSAP for the line-drawing animation -->
+  <!-- GSAP for the line‐drawing animation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
   <!-- Roboto font -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
 
   <style>
     body {
-      font-family: 'Roboto', sans-serif;
-      background: #fdf6f0;
       margin: 0;
       padding: 0;
+      background: #fdf6f0;
+      font-family: 'Roboto', sans-serif;
     }
     .container {
       max-width: 640px;
@@ -26,31 +25,12 @@
       border-radius: .5rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
-    .title {
-      font-size: 1.25rem;
-      font-weight: 700;
-      text-align: center;
-      color: #111827;
-    }
-    .subtitle {
-      font-size: .9rem;
-      color: #374151;
-      text-align: center;
-      margin-top: .25rem;
-    }
-    .dynamic-date {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #065f46;
-      text-align: center;
-      margin-top: .5rem;
-    }
     .chart-title {
+      text-align: center;
       font-size: 1.5rem;
       font-weight: 700;
       color: #0b7f72;
-      text-align: center;
-      margin: 1.5rem 0 .5rem;
+      margin-bottom: 1rem;
     }
     .graph svg {
       width: 100%;
@@ -58,30 +38,26 @@
       display: block;
       margin: 0 auto;
     }
+    /* Call-out box style */
+    .callBox { fill: #fff; stroke: #334155; stroke-width: 1.5; rx: 6; }
+    .callTxt { font-size: 12px; fill: #334155; font-weight: 600; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2 class="title">The last plan you'll ever need to take your life back</h2>
-    <p class="subtitle">
-      Based on your answers, we expect you to
-      <span class="font-semibold text-[#0b7f72]">start feeling real relief by:</span>
-    </p>
-    <p id="dynamicDate" class="dynamic-date"></p>
-
     <h3 class="chart-title">Recovery Timeline (90 Days)</h3>
-
     <div class="graph">
       <svg viewBox="0 0 460 370" preserveAspectRatio="xMidYMid meet">
         <g transform="translate(60,10)">
+          <!-- Gradients -->
           <defs>
             <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#0b7f72"/>
-              <stop offset="100%" stop-color="#0284c7"/>
+              <stop offset="0%"    stop-color="#0b7f72"/>
+              <stop offset="100%"  stop-color="#0284c7"/>
             </linearGradient>
             <linearGradient id="flowGrad" x1="0%" y1="0%" x2="300%" y2="0%">
-              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.45"/>
-              <stop offset="50%" stop-color="#0ea5e9" stop-opacity="0.30"/>
+              <stop offset="0%"   stop-color="#38bdf8" stop-opacity="0.45"/>
+              <stop offset="50%"  stop-color="#0ea5e9" stop-opacity="0.30"/>
               <stop offset="100%" stop-color="#0284c7" stop-opacity="0.20"/>
               <animateTransform attributeName="gradientTransform"
                                 type="translate" from="0" to="-300"
@@ -89,7 +65,48 @@
             </linearGradient>
           </defs>
 
-          <!-- Only the line, fill and dots -->
+          <!-- Grid -->
+          <g stroke="#e5e7eb">
+            <line x1="0"   y1="60"  x2="340" y2="60"/>
+            <line x1="0"   y1="120" x2="340" y2="120"/>
+            <line x1="0"   y1="180" x2="340" y2="180"/>
+            <line x1="0"   y1="240" x2="340" y2="240"/>
+            <line x1="0"   y1="300" x2="340" y2="300"/>
+          </g>
+
+          <!-- Axes -->
+          <line x1="0"   y1="0"   x2="0"   y2="300" stroke="#374151" stroke-width="2"/>
+          <line x1="0"   y1="300" x2="340" y2="300" stroke="#374151" stroke-width="2"/>
+
+          <!-- Y-axis labels -->
+          <g font-size="12" font-weight="600" fill="#374151" text-anchor="end">
+            <text x="-10" y="4">10</text>
+            <text x="-10" y="64">8</text>
+            <text x="-10" y="124">6</text>
+            <text x="-10" y="184">4</text>
+            <text x="-10" y="244">2</text>
+            <text x="-10" y="304">0</text>
+          </g>
+
+          <!-- X-axis ticks & labels -->
+          <text x="170" y="340" text-anchor="middle"
+                font-size="14" font-weight="700" fill="#111827">Time</text>
+          <g font-size="12" fill="#6b7280" text-anchor="middle">
+            <text x="0"   y="320">Day 0</text>
+            <text x="68"  y="320">Day 14</text>
+            <text x="145" y="320">Day 30</text>
+            <text x="245" y="320">Day 60</text>
+            <text x="340" y="320" text-anchor="end">Day 90</text>
+          </g>
+
+          <!-- Y-axis title -->
+          <text transform="translate(-50,155) rotate(-90)"
+                font-size="14" font-weight="700"
+                fill="#111827" text-anchor="middle">
+            Symptom Intensity (0 = No Pain, 10 = Severe)
+          </text>
+
+          <!-- Curved line -->
           <path id="graph-line"
                 d="M0,60
                    C30,75   50,90   68,99
@@ -100,6 +117,7 @@
                 stroke="url(#lineGrad)"
                 stroke-width="4"/>
 
+          <!-- Filled area under curve -->
           <path class="water-wave"
                 d="M0,300
                    L0,60
@@ -110,36 +128,47 @@
                    L340,300 Z"
                 fill="url(#flowGrad)"/>
 
+          <!-- Data dots -->
           <circle id="dot1" cx="0"   cy="60"  r="6" fill="#0b7f72"/>
           <circle id="dot2" cx="68"  cy="99"  r="6" fill="#0b7f72"/>
           <circle id="dot3" cx="145" cy="145" r="6" fill="#0b7f72"/>
           <circle id="dot4" cx="245" cy="210" r="6" fill="#0b7f72"/>
           <circle id="dot5" cx="340" cy="260" r="6" fill="#0b7f72"/>
+
+          <!-- Call-out boxes -->
+          <g transform="translate(20,70)">
+            <rect width="140" height="22" class="callBox"/>
+            <text x="6" y="15" class="callTxt">➡️ Early relief begins</text>
+          </g>
+          <g transform="translate(80,118)">
+            <rect width="165" height="22" class="callBox"/>
+            <text x="6" y="15" class="callTxt">🔄 Nerves start stabilizing</text>
+          </g>
+          <g transform="translate(160,182)">
+            <rect width="190" height="22" class="callBox"/>
+            <text x="6" y="15" class="callTxt">⬆️ Nerve Regeneration Begins</text>
+          </g>
+          <g transform="translate(160,230)">
+            <rect width="190" height="22" class="callBox"/>
+            <text x="6" y="15" class="callTxt">📶 Normal Function Returning</text>
+          </g>
         </g>
       </svg>
     </div>
   </div>
 
   <script>
-    // 1) Dynamic date (14 days ahead)
-    const el = document.getElementById('dynamicDate');
-    const now = new Date();
-    now.setDate(now.getDate() + 14);
-    el.textContent = now.toLocaleDateString('en-US', {
-      month: 'long', day: 'numeric', year: 'numeric'
-    });
-
-    // 2) Animate the line stroke
+    // Animate the line‐drawing
     const path = document.getElementById('graph-line');
-    const length = path.getTotalLength();
-    path.style.strokeDasharray = length;
-    path.style.strokeDashoffset = length;
+    const total = path.getTotalLength();
+    path.style.strokeDasharray  = total;
+    path.style.strokeDashoffset = total;
     gsap.to(path, { strokeDashoffset: 0, duration: 2, ease: 'power1.inOut' });
 
-    // 3) Dot pop-ins
+    // Pop in the dots
     ['dot1','dot2','dot3','dot4','dot5'].forEach((id,i) => {
       gsap.from(`#${id}`, {
-        duration: 1, opacity: 0, y: 20,
+        duration: 1.2, opacity: 0, y: 20,
         ease: 'bounce.out', delay: 0.8 + i*0.3
       });
     });
