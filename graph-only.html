@@ -6,7 +6,7 @@
 
   <!-- Tailwind for quick layout & typography -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- GSAP for the line‐drawing + dot animations -->
+  <!-- GSAP for the line-drawing + dot animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
   <!-- Roboto font -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
@@ -22,9 +22,9 @@
       max-width: 640px;
       margin: 2rem auto;
       padding: 1rem;
-      background: #fdf6f0;
+      background: #fff;
       border-radius: .5rem;
-      box-shadow: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
     .title {
       text-align: center;
@@ -58,6 +58,23 @@
       display: block;
       margin: 0 auto;
     }
+  body, .container {
+    margin: 0;
+    padding: 0;
+    background: #fdf6f0;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .container {
+    max-width: 640px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: #fdf6f0;   /* matches the page */
+    border-radius: .5rem;
+    box-shadow: none;       /* remove if you still want the card shadow */
+  }
+
+
     .callBox { fill: #fff; stroke: #334155; stroke-width: 1.5; rx: 6; }
     .callTxt { font-size: 12px; fill: #334155; font-weight: 600; }
   </style>
@@ -77,8 +94,7 @@
 
     <!-- Graph SVG -->
     <div class="graph">
-      <!-- viewBox height reduced from 370 → 350 -->
-      <svg viewBox="0 0 460 350" preserveAspectRatio="xMidYMid meet">
+      <svg viewBox="0 0 460 370" preserveAspectRatio="xMidYMid meet">
         <g transform="translate(60,10)">
           <!-- Gradients -->
           <defs>
@@ -120,15 +136,14 @@
           </g>
 
           <!-- X-axis ticks & labels -->
-          <!-- "Time" lifted up from y="340" → y="320" -->
-          <text x="170" y="320" text-anchor="middle"
+          <text x="170" y="340" text-anchor="middle"
                 font-size="14" font-weight="700" fill="#111827">Time</text>
           <g font-size="12" fill="#6b7280" text-anchor="middle">
-            <text x="0"   y="300">Day 0</text>
-            <text x="68"  y="300">Day 14</text>
-            <text x="145" y="300">Day 30</text>
-            <text x="245" y="300">Day 60</text>
-            <text x="340" y="300" text-anchor="end">Day 90</text>
+            <text x="0"   y="320">Day 0</text>
+            <text x="68"  y="320">Day 14</text>
+            <text x="145" y="320">Day 30</text>
+            <text x="245" y="320">Day 60</text>
+            <text x="340" y="320" text-anchor="end">Day 90</text>
           </g>
 
           <!-- Y-axis title -->
