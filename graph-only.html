@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Recovery Timeline (Graph Only)</title>
-  <!-- Tailwind for layout + typography -->
+
+  <!-- Tailwind for quick layout & typography -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- GSAP for the line‐drawing animation -->
+  <!-- GSAP for the line-drawing + dot animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
   <!-- Roboto font -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
@@ -25,12 +26,31 @@
       border-radius: .5rem;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
+    .title {
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111827;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: .9rem;
+      color: #374151;
+      margin-top: .25rem;
+    }
+    .dynamic-date {
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #065f46;
+      margin-top: .5rem;
+    }
     .chart-title {
       text-align: center;
       font-size: 1.5rem;
       font-weight: 700;
       color: #0b7f72;
-      margin-bottom: 1rem;
+      margin: 1.5rem 0 .5rem;
     }
     .graph svg {
       width: 100%;
@@ -38,22 +58,32 @@
       display: block;
       margin: 0 auto;
     }
-    /* Call-out box style */
     .callBox { fill: #fff; stroke: #334155; stroke-width: 1.5; rx: 6; }
     .callTxt { font-size: 12px; fill: #334155; font-weight: 600; }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Header + dynamic date -->
+    <h2 class="title">The last plan you'll ever need to take your life back</h2>
+    <p class="subtitle">
+      Based on your answers, we expect you to
+      <span class="font-semibold text-[#0b7f72]">start feeling real relief by:</span>
+    </p>
+    <p id="plus14" class="dynamic-date"></p>
+
+    <!-- Chart title -->
     <h3 class="chart-title">Recovery Timeline (90 Days)</h3>
+
+    <!-- Graph SVG -->
     <div class="graph">
       <svg viewBox="0 0 460 370" preserveAspectRatio="xMidYMid meet">
         <g transform="translate(60,10)">
           <!-- Gradients -->
           <defs>
             <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%"    stop-color="#0b7f72"/>
-              <stop offset="100%"  stop-color="#0284c7"/>
+              <stop offset="0%"  stop-color="#0b7f72"/>
+              <stop offset="100%" stop-color="#0284c7"/>
             </linearGradient>
             <linearGradient id="flowGrad" x1="0%" y1="0%" x2="300%" y2="0%">
               <stop offset="0%"   stop-color="#38bdf8" stop-opacity="0.45"/>
@@ -67,11 +97,11 @@
 
           <!-- Grid -->
           <g stroke="#e5e7eb">
-            <line x1="0"   y1="60"  x2="340" y2="60"/>
-            <line x1="0"   y1="120" x2="340" y2="120"/>
-            <line x1="0"   y1="180" x2="340" y2="180"/>
-            <line x1="0"   y1="240" x2="340" y2="240"/>
-            <line x1="0"   y1="300" x2="340" y2="300"/>
+            <line x1="0" y1="60"  x2="340" y2="60"/>
+            <line x1="0" y1="120" x2="340" y2="120"/>
+            <line x1="0" y1="180" x2="340" y2="180"/>
+            <line x1="0" y1="240" x2="340" y2="240"/>
+            <line x1="0" y1="300" x2="340" y2="300"/>
           </g>
 
           <!-- Axes -->
@@ -106,7 +136,7 @@
             Symptom Intensity (0 = No Pain, 10 = Severe)
           </text>
 
-          <!-- Curved line -->
+          <!-- Curved line & fill -->
           <path id="graph-line"
                 d="M0,60
                    C30,75   50,90   68,99
@@ -116,8 +146,6 @@
                 fill="none"
                 stroke="url(#lineGrad)"
                 stroke-width="4"/>
-
-          <!-- Filled area under curve -->
           <path class="water-wave"
                 d="M0,300
                    L0,60
@@ -158,7 +186,18 @@
   </div>
 
   <script>
-    // Animate the line‐drawing
+    // Populate the “start feeling real relief by” date (14 days ahead)
+    (() => {
+      const el = document.getElementById('plus14');
+      if (!el) return;
+      const date = new Date();
+      date.setDate(date.getDate() + 14);
+      el.textContent = date.toLocaleDateString('en-US', {
+        month: 'long', day: 'numeric', year: 'numeric'
+      });
+    })();
+
+    // Animate the line-drawing
     const path = document.getElementById('graph-line');
     const total = path.getTotalLength();
     path.style.strokeDasharray  = total;
@@ -168,8 +207,11 @@
     // Pop in the dots
     ['dot1','dot2','dot3','dot4','dot5'].forEach((id,i) => {
       gsap.from(`#${id}`, {
-        duration: 1.2, opacity: 0, y: 20,
-        ease: 'bounce.out', delay: 0.8 + i*0.3
+        duration: 1.2,
+        opacity: 0,
+        y: 20,
+        ease: 'bounce.out',
+        delay: 0.8 + i * 0.3
       });
     });
   </script>
