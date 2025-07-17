@@ -2,37 +2,75 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Recovery Timeline Block</title>
-  <!-- Tailwind for quick styling; remove if you already have your own CSS -->
+  <title>Recovery Timeline (Slim)</title>
+
+  <!-- Tailwind for quick styling -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- GSAP for the line-drawing animation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  <!-- Roboto font -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+
   <style>
-    body { font-family: 'Roboto', sans-serif; background: #fdf6f0; }
-    .container { max-width: 600px; margin: 2rem auto; padding: 1rem; }
-    .title { font-size: 1.25rem; font-weight: 700; color: #111827; }
-    .subtitle { font-size: 0.9rem; color: #374151; }
-    .dynamic-date { font-size: 1.5rem; font-weight: 700; color: #065f46; margin-top: .25rem; }
-    .chart-title { font-size: 1.5rem; font-weight: 700; color: #0b7f72; margin: 1rem 0; text-align: center; }
-    /* ensure the SVG fits */
-    .graph svg { width: 100%; height: auto; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #fdf6f0;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 640px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #fff;
+      border-radius: .5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-align: center;
+      color: #111827;
+    }
+    .subtitle {
+      font-size: .9rem;
+      color: #374151;
+      text-align: center;
+      margin-top: .25rem;
+    }
+    .dynamic-date {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #065f46;
+      text-align: center;
+      margin-top: .5rem;
+    }
+    .chart-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0b7f72;
+      text-align: center;
+      margin: 1.5rem 0 .5rem;
+    }
+    .graph svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
   </style>
 </head>
 <body>
-  <div class="container bg-white rounded-lg shadow-lg">
-    <!-- Header -->
-    <h2 class="title text-center">The last plan you'll ever need to take your life back</h2>
-    <p class="subtitle text-center">
+  <div class="container">
+    <h2 class="title">The last plan you'll ever need to take your life back</h2>
+    <p class="subtitle">
       Based on your answers, we expect you to
       <span class="font-semibold text-[#0b7f72]">start feeling real relief by:</span>
     </p>
-    <p id="dynamicDate" class="dynamic-date text-center"></p>
+    <p id="dynamicDate" class="dynamic-date"></p>
 
-    <!-- Chart Title -->
     <h3 class="chart-title">Recovery Timeline (90 Days)</h3>
 
-    <!-- Graph SVG -->
     <div class="graph">
       <svg viewBox="0 0 460 370" preserveAspectRatio="xMidYMid meet">
         <g transform="translate(60,10)">
@@ -50,11 +88,28 @@
                                 dur="4s" repeatCount="indefinite"/>
             </linearGradient>
           </defs>
-          <!-- Grid & Axes omitted for brevity; include from your original SVG -->
-          <path id="graph-line" d="M0,60 C30,75 50,90 68,99 C95,115 120,130 145,145 C185,170 215,190 245,210 C285,235 315,250 340,260"
-                fill="none" stroke="url(#lineGrad)" stroke-width="4"/>
-          <path class="water-wave" d="M0,300 L0,60 C30,75 50,90 68,99 C95,115 120,130 145,145 C185,170 215,190 245,210 C285,235 315,250 340,260 L340,300 Z"
+
+          <!-- Only the line, fill and dots -->
+          <path id="graph-line"
+                d="M0,60
+                   C30,75   50,90   68,99
+                   C95,115 120,130 145,145
+                   C185,170 215,190 245,210
+                   C285,235 315,250 340,260"
+                fill="none"
+                stroke="url(#lineGrad)"
+                stroke-width="4"/>
+
+          <path class="water-wave"
+                d="M0,300
+                   L0,60
+                   C30,75   50,90   68,99
+                   C95,115 120,130 145,145
+                   C185,170 215,190 245,210
+                   C285,235 315,250 340,260
+                   L340,300 Z"
                 fill="url(#flowGrad)"/>
+
           <circle id="dot1" cx="0"   cy="60"  r="6" fill="#0b7f72"/>
           <circle id="dot2" cx="68"  cy="99"  r="6" fill="#0b7f72"/>
           <circle id="dot3" cx="145" cy="145" r="6" fill="#0b7f72"/>
@@ -65,17 +120,16 @@
     </div>
   </div>
 
-  <!-- Scripts -->
   <script>
     // 1) Dynamic date (14 days ahead)
-    const dateEl = document.getElementById('dynamicDate');
-    const d = new Date();
-    d.setDate(d.getDate() + 14);
-    dateEl.textContent = d.toLocaleDateString('en-US', {
+    const el = document.getElementById('dynamicDate');
+    const now = new Date();
+    now.setDate(now.getDate() + 14);
+    el.textContent = now.toLocaleDateString('en-US', {
       month: 'long', day: 'numeric', year: 'numeric'
     });
 
-    // 2) SVG line-drawing animation
+    // 2) Animate the line stroke
     const path = document.getElementById('graph-line');
     const length = path.getTotalLength();
     path.style.strokeDasharray = length;
@@ -85,7 +139,7 @@
     // 3) Dot pop-ins
     ['dot1','dot2','dot3','dot4','dot5'].forEach((id,i) => {
       gsap.from(`#${id}`, {
-        duration: 1.2, opacity: 0, y: 20,
+        duration: 1, opacity: 0, y: 20,
         ease: 'bounce.out', delay: 0.8 + i*0.3
       });
     });
